@@ -15,7 +15,11 @@ contain only proven methods that produce meaningful results and plots.
 
 ### enviorment
 python interperter version - 3.7
-libraries&packeges - @see 'requirements.txt'.
+
+libraries&packeges - @see 'requirements.txt'
+
 ffmpeg - your system must have ffmpeg installed, ffmpeg is a c-system library, for audio and video decoding/encoding.
+
 ImageJ & FIJI (Fiji is just ImageJ) - ImageJ is a c library to process and analyze (mainly) biological visual data (images&is video).
+
 FIJI is the main tool we use in order to pre-process our dataset, cropping, manipulating and more.
