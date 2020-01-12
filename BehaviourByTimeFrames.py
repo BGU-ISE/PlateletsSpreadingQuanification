@@ -100,40 +100,42 @@ class DynamicsDistributionOverTime:
             return time_frame_dynamics_distributions
 
 
+if __name__ =="__main__":
 
+    directory = os.fsencode("ForAnalyze")
 
-directory = os.fsencode("ForAnalyze")
+    for file in os.listdir(directory):
+        ddot = DynamicsDistributionOverTime(time_frame_size=10)
+        FILENAME = os.fsdecode(file)
+        if FILENAME == ".DS_Store":
+            continue
+        ax = plt.axes()
+        fig, axis = plt.subplots(2)
+        to_plot = ddot.calc_dynamics_distribution("/Users/yishaiazabary/PycharmProjects/platelets/ForAnalyze/"+FILENAME, z_score_normalize=False)
+        col_labels = []
+        for i in range(0, len(ddot.DYNAMICS_RANGE)):
+            if i % 3 == 0:
+                col_labels.append(ddot.DYNAMICS_RANGE[i])
+        row_labels = ["{0}".format(x * ddot.TIME_FRAME_SIZE) for x in range(0, ddot.number_of_time_frames)]
+        # sns.set()
+        ax_heatmap = sns.heatmap(data=to_plot, vmax=.5, ax=ax)
+        ax_heatmap.set_yticklabels(labels=row_labels, rotation=0)
+        ax_heatmap.set_xticklabels(labels=col_labels, rotation=45)
+        ax_heatmap.set(title='{0}'.format(FILENAME[:-4]), ylabel="Time", xlabel="UP <= ∂-I => DOWN")
+        plt.show()
+        axis[0] = ax_heatmap
 
-for file in os.listdir(directory):
-    ddot = DynamicsDistributionOverTime(time_frame_size=10)
-    FILENAME = os.fsdecode(file)
-    if FILENAME == ".DS_Store":
-        continue
-    ax = plt.axes()
-    # fig, axis = plt.subplots(2)
-    to_plot = ddot.calc_dynamics_distribution("/Users/yishaiazabary/PycharmProjects/platelets/ForAnalyze/"+FILENAME, z_score_normalize=False)
-    col_labels = []
-    for i in range(0, len(ddot.DYNAMICS_RANGE)):
-        if i % 3 == 0:
-            col_labels.append(ddot.DYNAMICS_RANGE[i])
-    row_labels = ["{0}".format(x * ddot.TIME_FRAME_SIZE) for x in range(0, ddot.number_of_time_frames)]
-    # sns.set()
-    ax_heatmap = sns.heatmap(data=to_plot, vmax=.5, ax=ax)
-    ax_heatmap.set_yticklabels(labels=row_labels, rotation=0)
-    ax_heatmap.set_xticklabels(labels=col_labels, rotation=45)
-    ax_heatmap.set(title='{0}'.format(FILENAME[:-4]), ylabel="Time", xlabel="UP <= ∂-I => DOWN")
-    plt.show()
-    # axis[0] = ax_heatmap
-
-    figure = ax.get_figure()
-    # # figure.savefig("Heatmaps/DynamicsOverTimeResults/{0}_DynamicsOverTimeHeatmap.png".format(FILENAME[:-4]), dpi=200)
-    #
-    # to_plot = ddot.calc_dynamics_distribution("/Users/yishaiazabary/PycharmProjects/platelets/ForAnalyze/" + FILENAME,
-    #                                           calc_dynamics_distribution_differences=True, z_score_normalize=False)
-    # ax_barplot = sns.barplot(np.uint8(np.linspace(0,len(to_plot), len(to_plot))), to_plot)
-    # ax_barplot.set(xlabel="Frame Number", ylabel="Up-Down Dynamics", title=FILENAME)
-    # # axis[1] = ax_barplot
-    # plt.show()
-    figure.savefig("Heatmaps/{0}_DynamicsOverTimeDifferences.png".format(FILENAME[:-4]), dpi=200)
+        # figure = ax.get_figure()
+        # plt.savefig("Heatmaps/DynamicsOverTimeResults/{0}_DynamicsOverTimeHeatmap.png".format(FILENAME[:-4]), dpi=200)
+        #
+        to_plot = ddot.calc_dynamics_distribution("/Users/yishaiazabary/PycharmProjects/platelets/ForAnalyze/" + FILENAME,
+                                                  calc_dynamics_distribution_differences=True, z_score_normalize=False)
+        ax_barplot = sns.barplot(np.uint8(np.linspace(0,len(to_plot), len(to_plot))), to_plot)
+        ax_barplot.set(xlabel="Frame Number/{0}".format(ddot.TIME_FRAME_SIZE), ylabel="Up-Down Dynamics", title=FILENAME)
+        ax_barplot.tick_params(axis='both', which='major', labelsize=5)
+        ax_barplot.tick_params(axis='both', which='minor', labelsize=3)
+        # axis[1] = ax_barplot
+        plt.show()
+        # figure.savefig("Heatmaps/{0}_DynamicsOverTimeDifferences.png".format(FILENAME[:-4]), dpi=200)
 
 
