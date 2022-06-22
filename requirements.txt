@@ -1,6 +1,6 @@
 ffprobe==0.5
 joblib==0.13.2
-numpy==1.17.0
+numpy==1.22.0
 opencv-python==4.1.0.25
 Pillow==6.2.0
 scikit-learn==0.21.3
